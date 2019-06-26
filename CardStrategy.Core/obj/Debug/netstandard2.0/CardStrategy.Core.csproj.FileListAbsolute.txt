@@ -1,0 +1,12 @@
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\bin\Debug\netstandard2.0\CardStrategy.Core.deps.json
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\bin\Debug\netstandard2.0\CardStrategy.Core.dll
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\bin\Debug\netstandard2.0\CardStrategy.Core.pdb
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.csprojAssemblyReference.cache
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.csproj.CoreCompileInputs.cache
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.AssemblyInfoInputs.cache
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.AssemblyInfo.cs
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.dll
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.pdb
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\bin\Debug\netstandard2.0\CardStrategy.Models.dll
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\bin\Debug\netstandard2.0\CardStrategy.Models.pdb
+C:\Users\pmichaels\Source\Repos\GitHub\CardStrategy\CardStrategy.Core\obj\Debug\netstandard2.0\CardStrategy.Core.csproj.CopyComplete
