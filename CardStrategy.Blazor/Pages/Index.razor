@@ -1,7 +1,46 @@
 ﻿@page "/"
+@inject ViewModels.StrategyViewModel StrategyViewModel
+@using CardStrategy.Models;
 
-<h1>Hello, world!</h1>
+<div>
+    <h1>BlackJack Strategy Analyser</h1>
 
-Welcome to your new app.
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                @for (int i = 2; i <= 10; i++)
+                {
+                    <th>@i</th>
+                }
+                <th>A</th>
+            </tr>
+        </thead>
+        <tbody>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+            @foreach (var strategy in StrategyViewModel.AvailableActions)
+            {
+            <tr>
+                <td>@strategy.PlayerValue</td>
+
+                @for (int i = 2; i <= 10; i++)
+                {
+                    <td>
+                        <button @onclick="@(() => StrategyViewModel.ToggleAction(strategy.Key))">@strategy.PlayerAction</button>
+                    </td>
+                }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    BlackJackStrategy strategy;
+
+    protected override Task OnInitAsync()
+    {
+        StrategyViewModel.Init();
+        return Task.CompletedTask;
+    }
+}

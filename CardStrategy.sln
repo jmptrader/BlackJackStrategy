@@ -11,9 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStrategy.Tests", "CardS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStrategy.Models", "CardStrategy.Models\CardStrategy.Models.csproj", "{0B9D6A63-1686-4B68-AD34-783EB9E08B3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStrategy.Common", "CardStrategy.Common\CardStrategy.Common.csproj", "{A640FB44-A6CF-45A5-BC06-7DFA8F400FCA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C4A7357C-4785-4BDF-942D-694E1556317A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EDB1269A-0E42-454B-9AAE-970CBE412444}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +40,6 @@ Global
 		{0B9D6A63-1686-4B68-AD34-783EB9E08B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B9D6A63-1686-4B68-AD34-783EB9E08B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B9D6A63-1686-4B68-AD34-783EB9E08B3D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A640FB44-A6CF-45A5-BC06-7DFA8F400FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A640FB44-A6CF-45A5-BC06-7DFA8F400FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A640FB44-A6CF-45A5-BC06-7DFA8F400FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A640FB44-A6CF-45A5-BC06-7DFA8F400FCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

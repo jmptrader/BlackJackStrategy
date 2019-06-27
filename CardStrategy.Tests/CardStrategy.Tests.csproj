@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CardStrategy.Common\CardStrategy.Common.csproj" />
     <ProjectReference Include="..\CardStrategy.Core\CardStrategy.Core.csproj" />
     <ProjectReference Include="..\CardStrategy.Models\CardStrategy.Models.csproj" />
   </ItemGroup>

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
-using CardStrategy.Common;
+using CardStrategy.Common.Extensions;
 
 namespace CardStrategy.Tests.Models
 {
@@ -39,6 +39,72 @@ namespace CardStrategy.Tests.Models
 
             // Assert
             Assert.Equal(card1.Values[0], deck.Cards[2].Values[0]);
+        }
+
+        [Fact]
+        public void AddUpHand_NoAces_12()
+        {
+            // Arrange
+            var hand = new Hand()
+            {
+                Cards = new List<Card>()
+                {
+                    new Card(CardSuit.Clubs, 3, CardType.Number),
+                    new Card(CardSuit.Diamonds, 3, CardType.Number),
+                    new Card(CardSuit.Clubs, 4, CardType.Number),
+                    new Card(CardSuit.Spades, 2, CardType.Number),
+                }
+            };
+
+            // Act
+            int total = hand.Cards.AddUp();
+
+            // Assert
+            Assert.Equal(12, total);
+        }
+
+        [Fact]
+        public void AddUpHand_Aces_12Plus_SoftAce()
+        {
+            // Arrange
+            var hand = new Hand()
+            {
+                Cards = new List<Card>()
+                {
+                    new Card(CardSuit.Clubs, 3, CardType.Number),
+                    new Card(CardSuit.Diamonds, 3, CardType.Number),
+                    new Card(CardSuit.Clubs, 4, CardType.Number),
+                    new Card(CardSuit.Spades, 2, CardType.Number),
+                    new Card(CardSuit.Spades, new [] {1, 11 }, CardType.Ace),
+                }
+            };
+
+            // Act
+            int total = hand.Cards.AddUp();
+
+            // Assert
+            Assert.Equal(13, total);
+        }
+
+        [Fact]
+        public void AddUpHand_Aces_3Ace_13()
+        {
+            // Arrange
+            var hand = new Hand()
+            {
+                Cards = new List<Card>()
+                {                    
+                    new Card(CardSuit.Spades, new [] { 1, 11 }, CardType.Ace),
+                    new Card(CardSuit.Clubs, new [] { 1, 11 }, CardType.Ace),
+                    new Card(CardSuit.Diamonds, new [] { 1, 11 }, CardType.Ace),
+                }
+            };
+
+            // Act
+            int total = hand.Cards.AddUp();
+
+            // Assert
+            Assert.Equal(13, total);
         }
     }
 }

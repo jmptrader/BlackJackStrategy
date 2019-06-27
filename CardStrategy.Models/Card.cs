@@ -34,6 +34,16 @@ namespace CardStrategy.Models
             }
         }
 
+        public void TurnCard()
+        {
+            if (Visible)
+            {
+                throw new Exception("Can only turn face down cards");
+            }
+
+            Visible = true;
+        }
+
         public CardSuit Suit { get; set; }
         public int[] Values { get; set; }
         public CardType Type { get; set; }
@@ -49,6 +59,11 @@ namespace CardStrategy.Models
         {
             var cardComparer = new CardComparer();
             return cardComparer.Equals(this, (Card)obj);            
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }
