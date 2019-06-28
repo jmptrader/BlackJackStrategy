@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CardStrategy.Core\CardStrategy.Core.csproj" />
+    <ProjectReference Include="..\MVVMShirt\MVVMShirt.csproj" />
   </ItemGroup>
 
 </Project>

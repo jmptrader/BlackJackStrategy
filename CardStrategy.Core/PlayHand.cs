@@ -53,7 +53,7 @@ namespace CardStrategy.Core
             _cards.Remove(card);
         }
 
-        public void PlayerAnte(Player player, int anti)
+        public void PlayerAnte(Player player, decimal anti)
         {
             player.Money -= anti;
             player.Ante = anti;

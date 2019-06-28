@@ -28,4 +28,14 @@ namespace CardStrategy.Models
         Double,
         Split
     }
+
+    public enum BettingStrategy
+    {
+        Steady,
+        IncreaseOnWin,
+        IncreaseOnLose,
+        DoubleOnWin,
+        DoubleOnLose,
+        Martingale
+    }
 }
