@@ -17,5 +17,6 @@ namespace CardStrategy.Core.Models
 
         public int StartingAnte { get; set; }
 
+        public List<AvailableAction> AvailableActions { get; set; }
     }
 }

@@ -8,13 +8,14 @@ namespace CardStrategy.Core
 {
     public class PlayHand
     {
-        private readonly IList<Card> _cards;
-        private readonly Table _table;
+        private readonly List<Card> _cards;
 
-        public PlayHand(IList<Card> cards, Table table)
+        public Table Table { get; set; }
+
+        public PlayHand(List<Card> cards, Table table)
         {
             _cards = cards;
-            _table = table;
+            Table = table;
         }
 
         public bool GameInProgress { get; set; }
@@ -24,20 +25,28 @@ namespace CardStrategy.Core
             if (GameInProgress)
             {
                 throw new Exception("Cannot deal - a game is in progress");
-            }            
+            }
+
+            _cards.AddRange(Table.Dealer.Hand.Cards);
+            Table.Dealer.Hand.Cards.RemoveAll(a => true);
+            foreach (var player in Table.Players)
+            {
+                _cards.AddRange(player.Hand.Cards);
+                player.Hand.Cards.RemoveAll(a => true);
+            }
 
             for (int i = 0; i <= 1; i++)
             {
-                foreach (var player in _table.Players)
+                foreach (var player in Table.Players)
                 {
                     DealSingleCard(player);
                 }
 
-                DealSingleCard(_table.Dealer, i == 1);
+                DealSingleCard(Table.Dealer, i == 1);
             }
 
             GameInProgress = true;
-        }
+        }        
 
         private void DealSingleCard(Player player, bool faceDown = false)
         {
@@ -66,7 +75,7 @@ namespace CardStrategy.Core
                 throw new Exception("A game must be in progress to play (call Deal first)");
             }
 
-            foreach (var player in _table.Players)
+            foreach (var player in Table.Players)
             {
                 while (true)
                 {
@@ -77,9 +86,9 @@ namespace CardStrategy.Core
 
             while (true)
             {
-                DealSingleCard(_table.Dealer);
-                if (IsPlayerBust(_table.Dealer) ||
-                    HasDealerReachedLimit(_table.Dealer))
+                DealSingleCard(Table.Dealer);
+                if (IsPlayerBust(Table.Dealer) ||
+                    HasDealerReachedLimit(Table.Dealer))
                 {
                     break;
                 }
@@ -90,20 +99,20 @@ namespace CardStrategy.Core
 
         public void Payout()
         {
-            bool dealerBust = IsPlayerBust(_table.Dealer);
-            int dealerTotal = dealerBust ? -1 : _table.Dealer.Hand.Cards.AddUp();
+            bool dealerBust = IsPlayerBust(Table.Dealer);
+            int dealerTotal = dealerBust ? -1 : Table.Dealer.Hand.Cards.AddUp();
 
-            foreach (var player in _table.Players)
+            foreach (var player in Table.Players)
             {
                 if (IsPlayerBust(player))
                 {
-                    LoseStake(player, _table.Dealer);
+                    LoseStake(player, Table.Dealer);
                     continue;
                 }
 
                 if (dealerBust)
                 {
-                    PayWinnings(player, _table.Dealer);
+                    PayWinnings(player, Table.Dealer);
                 }
             }
         }
@@ -146,7 +155,7 @@ namespace CardStrategy.Core
 
         private bool GetPlayerAction(Player player)
         {
-            var action = player.GetAction(_table);
+            var action = player.GetAction(Table);
             switch (action)
             {
                 case PlayerAction.TakeCard:

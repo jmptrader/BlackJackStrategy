@@ -1,7 +1,7 @@
-﻿using CardStrategy.Blazor.Models;
-using CardStrategy.Core;
+﻿using CardStrategy.Core;
 using CardStrategy.Core.Models;
 using CardStrategy.Models;
+using Microsoft.Extensions.Logging;
 using MVVMShirt;
 using System;
 using System.Collections.Generic;
@@ -13,10 +13,12 @@ namespace CardStrategy.Blazor.ViewModels
     public class StrategyViewModel
     {
         private readonly IRunAnalysis _runAnalysis;
+        private readonly ILogger _logger;
 
-        public StrategyViewModel(IRunAnalysis runAnalysis)
+        public StrategyViewModel(IRunAnalysis runAnalysis, ILogger<StrategyViewModel> logger)
         {
             _runAnalysis = runAnalysis;
+            _logger = logger;
         }
 
         public List<AvailableAction> AvailableActions { get; set; } = new List<AvailableAction>();
@@ -47,16 +49,21 @@ namespace CardStrategy.Blazor.ViewModels
 
         private void RunAnalysis()
         {
+            _logger.LogInformation($"RunAnalysis: Starting Funds {PlayerFunds}");
+
             var analysisConfiguration = new AnalysisConfiguration()
             {
                 BettingStrategy = BettingStrategy,
                 DeckCountPerShoe = 4,
                 PlayerFunds = PlayerFunds,
                 StartingAnte = 10,
-                TargetFunds = TargetFunds
+                TargetFunds = TargetFunds,
+                AvailableActions = AvailableActions
             };
 
             PlayerFunds = _runAnalysis.Run(analysisConfiguration);
+
+            _logger.LogInformation($"RunAnalysis: End Funds: {PlayerFunds}");
         }
 
         private void ToggleAction(Guid key)

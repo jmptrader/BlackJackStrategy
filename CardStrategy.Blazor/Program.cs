@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace CardStrategy.Blazor
 {
@@ -10,7 +11,7 @@ namespace CardStrategy.Blazor
         }
 
         public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
-            BlazorWebAssemblyHost.CreateDefaultBuilder()
+            BlazorWebAssemblyHost.CreateDefaultBuilder()            
                 .UseBlazorStartup<Startup>();
     }
 }
