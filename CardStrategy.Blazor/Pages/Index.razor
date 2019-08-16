@@ -65,11 +65,11 @@
 
 <button @onclick="@(() => MainViewModel.RunAnalysisCommand.Execute(null))">Run Analysis</button>
 
-@code {    
-
-    protected override Task OnInitAsync()
+@code { 
+    protected override Task OnInitializedAsync()
     {
         MainViewModel.Init();
         return Task.CompletedTask;
     }
+
 }

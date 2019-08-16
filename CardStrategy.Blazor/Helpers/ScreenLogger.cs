@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using MVVMShirt.Messages;
 using System;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace CardStrategy.Blazor.Helpers
@@ -22,7 +23,7 @@ namespace CardStrategy.Blazor.Helpers
         public IDisposable BeginScope<TState>(TState state)
         {
             var s = state as IDisposable;
-            _context = JsonSerializer.ToString(s);
+            _context = JsonSerializer.Serialize(s);
             return s;
         }
 

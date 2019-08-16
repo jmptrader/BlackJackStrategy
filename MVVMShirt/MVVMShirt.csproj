@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="microsoft.Extensions.Logging" Version="3.0.0-preview8.19405.4" />
   </ItemGroup>
 
 </Project>
