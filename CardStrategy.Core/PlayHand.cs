@@ -6,13 +6,12 @@ using CardStrategy.Common.Extensions;
 
 namespace CardStrategy.Core
 {
-    public class PlayHand
+    public class PlayHand : IPlayHand
     {
-        private readonly List<Card> _cards;
-
+        private List<Card> _cards;
         public Table Table { get; set; }
 
-        public PlayHand(List<Card> cards, Table table)
+        public void Init(List<Card> cards, Table table)
         {
             _cards = cards;
             Table = table;
@@ -97,10 +96,11 @@ namespace CardStrategy.Core
             GameInProgress = false;
         }
 
-        public void Payout()
+        public bool Payout()
         {
             bool dealerBust = IsPlayerBust(Table.Dealer);
             int dealerTotal = dealerBust ? -1 : Table.Dealer.Hand.Cards.AddUp();
+            bool playerWins = false;
 
             foreach (var player in Table.Players)
             {
@@ -112,12 +112,40 @@ namespace CardStrategy.Core
 
                 if (dealerBust)
                 {
-                    PayWinnings(player, Table.Dealer);
+                    bool wins = PayWinnings(player, Table.Dealer);
+                    if (!playerWins & wins) playerWins = true;
+                    continue;
+                }
+
+                int playerTotal = player.Hand.Cards.AddUp();
+
+                if (dealerTotal == playerTotal)
+                {
+                    // Stand-off                    
+                }
+                else if (dealerTotal > playerTotal)
+                {
+                    // Dealer wins
+                    LoseStake(player, Table.Dealer);
+                }
+                else
+                {
+                    // Player wins
+                    bool wins = PayWinnings(player, Table.Dealer);
+                    if (!playerWins & wins) playerWins = true;
                 }
             }
+
+            return playerWins;
         }
 
-        private void PayWinnings(Player player, Dealer dealer)
+        /// <summary>
+        /// Return true is the player is the subject player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="dealer"></param>
+        /// <returns></returns>
+        private bool PayWinnings(Player player, Dealer dealer)
         {
             decimal odds = 2;
             if (player.Hand.Cards.IsBlackJack())
@@ -131,6 +159,8 @@ namespace CardStrategy.Core
             player.Ante = 0;
 
             dealer.Money -= winnings;
+
+            return player.IsSubject;
         }
 
         private void LoseStake(Player player, Dealer dealer)

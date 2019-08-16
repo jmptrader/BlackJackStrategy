@@ -24,7 +24,9 @@ namespace CardStrategy.Tests.Unit.Core
             {
                 Dealer = dealer
             };
-            var playHand = new PlayHand(cards, table);
+            var playHand = new PlayHand();
+
+            playHand.Init(cards, table);
 
             // Act
             playHand.Deal();
@@ -48,7 +50,10 @@ namespace CardStrategy.Tests.Unit.Core
             {
                 Dealer = dealer
             };
-            var playHand = new PlayHand(cards, table);
+            var playHand = new PlayHand();
+
+            playHand.Init(cards, table);
+
 
             // Act
             playHand.Deal();

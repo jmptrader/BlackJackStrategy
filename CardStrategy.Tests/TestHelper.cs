@@ -21,5 +21,28 @@ namespace CardStrategy.Tests
 
             return cards;
         }
+
+        public static List<AvailableAction> BuildAvailableActionsAlwaysStand()
+        {
+            var availableActions = new List<AvailableAction>();
+
+            for (int d = 2; d <= 11; d++)
+            {
+                for (int p = 3; p <= 21; p++)
+                {
+                    var action = new AvailableAction()
+                    {
+                        DealerCard = d,
+                        PlayerValue = p,
+                        PlayerAction = PlayerAction.Stand,
+                        Key = Guid.NewGuid()
+                    };
+                    availableActions.Add(action);
+                }
+            }
+
+            return availableActions;
+        }
+
     }
 }

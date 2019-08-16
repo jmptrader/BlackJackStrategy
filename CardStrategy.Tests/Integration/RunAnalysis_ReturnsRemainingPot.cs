@@ -6,55 +6,44 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace CardStrategy.Tests.Integration
 {
     public class RunAnalysis_ReturnsRemainingPot
     {
-        [Fact]
-        public void RunAnalysis_Steady_ReturnsRemainingPot()
+        [Theory]
+        [InlineData(BettingStrategy.Steady)]
+        [InlineData(BettingStrategy.Martingale)]
+        [InlineData(BettingStrategy.DoubleOnWin)]
+        [InlineData(BettingStrategy.IncreaseOnWin)]
+        [InlineData(BettingStrategy.IncreaseOnLose)]
+        [InlineData(BettingStrategy.DoubleOnLose)]        
+        public async Task RunAnalysis_Steady_ReturnsRemainingPot(BettingStrategy bettingStrategy)
         {
             // Arrange
             var logger = Substitute.For<ILogger<RunAnalysis>>();
-            var runAnalysis = new RunAnalysis(logger);
+            var playHand = new PlayHand();
+            var runAnalysis = new RunAnalysis(logger, playHand);
             var analysisConfiguration = new AnalysisConfiguration()
             {
                 StartingAnte = 1,
-                BettingStrategy = BettingStrategy.Steady,
+                BettingStrategy = bettingStrategy,
                 DeckCountPerShoe = 4,
                 PlayerFunds = 10,
                 TargetFunds = 11,
-                AvailableActions = BuildAvailableActionsAlwaysStand()
+                AvailableActions = TestHelper.BuildAvailableActionsAlwaysStand()
             };
 
+            var updateProgress = Substitute.For<IUpdateProgress>();
+
             // Act
-            decimal result = runAnalysis.Run(analysisConfiguration);
+            decimal result = await runAnalysis.Run(analysisConfiguration, updateProgress);
 
             // Assert
             Assert.True(result <= analysisConfiguration.TargetFunds + 1);
         }
 
-        private List<AvailableAction> BuildAvailableActionsAlwaysStand()
-        {
-            var availableActions = new List<AvailableAction>();
-
-            for (int d = 2; d <= 11; d++)
-            {
-                for (int p = 3; p <= 21; p++)
-                {
-                    var action = new AvailableAction()
-                    {
-                        DealerCard = d,
-                        PlayerValue = p,
-                        PlayerAction = PlayerAction.Stand,
-                        Key = Guid.NewGuid()
-                    };
-                    availableActions.Add(action);
-                }
-            }
-
-            return availableActions;
-        }
     }
 }

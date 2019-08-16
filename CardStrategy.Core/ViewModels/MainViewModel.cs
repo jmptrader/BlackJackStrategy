@@ -1,31 +1,33 @@
-﻿using CardStrategy.Core;
-using CardStrategy.Core.Models;
+﻿using CardStrategy.Core.Models;
 using CardStrategy.Models;
 using Microsoft.Extensions.Logging;
-using MVVMShirt;
+using MVVMShirt.Commands;
+using MVVMShirt.Messages;
+using MVVMShirt.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CardStrategy.Blazor.ViewModels
+namespace CardStrategy.Core.ViewModels
 {
-    public class StrategyViewModel
+    public class MainViewModel : BaseViewModel
     {
         private readonly IRunAnalysis _runAnalysis;
         private readonly ILogger _logger;
 
-        public StrategyViewModel(IRunAnalysis runAnalysis, ILogger<StrategyViewModel> logger)
+        public MainViewModel(IRunAnalysis runAnalysis, ILogger<MainViewModel> logger, IMessageBus messageBus) 
+            : base(messageBus)
         {
             _runAnalysis = runAnalysis;
-            _logger = logger;
+            _logger = logger; 
         }
 
         public List<AvailableAction> AvailableActions { get; set; } = new List<AvailableAction>();
 
-        public IWebCommand ToggleActionCommand { get; set; }
+        public IRelayCommand ToggleActionCommand { get; set; }
 
-        public IWebCommand RunAnalysisCommand { get; set; }
+        public IRelayCommandAsync RunAnalysisCommand { get; set; }
 
         public void Init()
         {
@@ -43,13 +45,20 @@ namespace CardStrategy.Blazor.ViewModels
                 }
             }
 
-            ToggleActionCommand = new WebCommand<Guid>(ToggleAction, ToggleActionEnabled);
-            RunAnalysisCommand = new WebCommand<object>(a => RunAnalysis());
+            ToggleActionCommand = new RelayCommand<Guid>(ToggleAction, ToggleActionEnabled);
+            RunAnalysisCommand = new RelayCommandAsync<object>(a => RunAnalysis());
+
+            MessageBus.Subscribe("LOG_MESSAGE", UpdateLog);
         }
 
-        private void RunAnalysis()
+        private Task UpdateLog(Message arg)
         {
-            _logger.LogInformation($"RunAnalysis: Starting Funds {PlayerFunds}");
+            throw new NotImplementedException();
+        }
+
+        private async Task RunAnalysis()
+        {
+            LogInformation($"RunAnalysis: Starting Funds {PlayerFunds}");
 
             var analysisConfiguration = new AnalysisConfiguration()
             {
@@ -61,9 +70,10 @@ namespace CardStrategy.Blazor.ViewModels
                 AvailableActions = AvailableActions
             };
 
-            PlayerFunds = _runAnalysis.Run(analysisConfiguration);
+            var updateProgress = new UpdateProgress();
+            PlayerFunds = await _runAnalysis.Run(analysisConfiguration, updateProgress);
 
-            _logger.LogInformation($"RunAnalysis: End Funds: {PlayerFunds}");
+            LogInformation($"RunAnalysis: End Funds: {PlayerFunds}");
         }
 
         private void ToggleAction(Guid key)
@@ -91,10 +101,18 @@ namespace CardStrategy.Blazor.ViewModels
             return true;
         }
 
-        public decimal PlayerFunds { get; set; } = 100;
+        public decimal PlayerFunds { get; set; } = 1000;
 
         public BettingStrategy BettingStrategy { get; set; }
 
-        public decimal TargetFunds { get; set; } = 150;
+        public decimal TargetFunds { get; set; } = 1500;
+
+        public List<LogEntry> Log { get; set; } = new List<LogEntry>();
+
+        private void LogInformation(string message)
+        {
+            _logger.LogInformation(message);
+            Log.Add(new LogEntry(message));
+        }
     }
 }

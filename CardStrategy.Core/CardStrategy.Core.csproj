@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CardStrategy.Models\CardStrategy.Models.csproj" />
+    <ProjectReference Include="..\MVVMShirt\MVVMShirt.csproj" />
   </ItemGroup>
 
 </Project>

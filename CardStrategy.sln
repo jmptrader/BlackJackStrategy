@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStrategy.Core", "CardSt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStrategy.Blazor", "CardStrategy.Blazor\CardStrategy.Blazor.csproj", "{B6B099C9-D186-4BA0-9F9A-8811924F70E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStrategy.Tests", "CardStrategy.Tests\CardStrategy.Tests.csproj", "{1357DAAD-2B3F-43A5-8690-1310488F87F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStrategy.Tests", "CardStrategy.Tests\CardStrategy.Tests.csproj", "{1357DAAD-2B3F-43A5-8690-1310488F87F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardStrategy.Models", "CardStrategy.Models\CardStrategy.Models.csproj", "{0B9D6A63-1686-4B68-AD34-783EB9E08B3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardStrategy.Models", "CardStrategy.Models\CardStrategy.Models.csproj", "{0B9D6A63-1686-4B68-AD34-783EB9E08B3D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C4A7357C-4785-4BDF-942D-694E1556317A}"
 EndProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVMShirt", "MVVMShirt\MVVMShirt.csproj", "{E3DF0222-1779-4A86-8EFC-CEE7DC474996}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVVMShirt", "MVVMShirt\MVVMShirt.csproj", "{E3DF0222-1779-4A86-8EFC-CEE7DC474996}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

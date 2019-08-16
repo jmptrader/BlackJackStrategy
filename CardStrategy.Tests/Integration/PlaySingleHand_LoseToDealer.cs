@@ -17,7 +17,9 @@ namespace CardStrategy.Tests.Integration
             var dealer = new Dealer();
             var table = new Table(dealer);
             var shoe = new Shoe(4);
-            var playHand = new PlayHand(shoe.Cards, table);
+            var playHand = new PlayHand();
+
+            playHand.Init(shoe.Cards, table);
 
             var blackJackStrategy = new BlackJackStrategy()
             {
@@ -61,7 +63,9 @@ namespace CardStrategy.Tests.Integration
             var dealer = new Dealer();
             var table = new Table(dealer);
             var shoe = new Shoe(4);
-            var playHand = new PlayHand(shoe.Cards, table);
+            var playHand = new PlayHand();
+
+            playHand.Init(shoe.Cards, table);
 
             var blackJackStrategy = new BlackJackStrategy()
             {

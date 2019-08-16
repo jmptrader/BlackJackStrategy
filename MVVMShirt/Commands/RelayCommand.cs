@@ -1,18 +1,18 @@
 ﻿using System;
 
-namespace MVVMShirt
+namespace MVVMShirt.Commands
 {
-    public class WebCommand<T> : IWebCommand
+    public class RelayCommand<T> : IRelayCommand
     {
         protected readonly Action<T> _execute;
         protected readonly Predicate<T> _canExecute;
 
-        public WebCommand(Action<T> execute)
+        public RelayCommand(Action<T> execute)
         {
             _execute = execute;            
         }
 
-        public WebCommand(Action<T> execute, Predicate<T> canExecute)
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             _execute = execute;
             _canExecute = canExecute;

@@ -1,0 +1,46 @@
+@using CardStrategy.Core.ViewModels
+@using MVVMShirt.Commands
+
+<h3>StrategyTable</h3>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                @for (int i = 2; i <= 10; i++)
+                {
+                    <th>@i</th>
+                }
+                <th>A</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var playerValue in StrategyViewModel.AvailableActions.OrderBy(a => a.PlayerValue).Select(a => a.PlayerValue).Distinct())
+            {
+                <tr>
+                    <td>@playerValue</td>
+
+                    @foreach (var availableAction in StrategyViewModel.AvailableActions.Where(a => a.PlayerValue == playerValue).OrderBy(a => a.DealerCard))
+                    {
+                        <td>
+                            <button @onclick="@(() => StrategyViewModel.ToggleActionCommand.Execute(availableAction.Key))"
+                                    style="width: 50px; align-content: center; font-size: x-small">
+                                @availableAction.PlayerAction
+                            </button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+[Parameter]
+private MainViewModel StrategyViewModel { get; set; }
+
+[Parameter]
+private IRelayCommand ToggleAction { get; set; }
+}

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using CardStrategy.Blazor.ViewModels;
 using CardStrategy.Core;
+using CardStrategy.Blazor.Helpers;
+using CardStrategy.Core.ViewModels;
 
 namespace CardStrategy.Blazor
 {
@@ -11,9 +11,10 @@ namespace CardStrategy.Blazor
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<StrategyViewModel, StrategyViewModel>();
+            services.AddTransient<MainViewModel, MainViewModel>();
             services.AddTransient<IRunAnalysis, RunAnalysis>();
-
+            services.AddTransient<IPlayHand, PlayHand>();
+            services.AddTransient<ILogger, ScreenLogger<MainViewModel>>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

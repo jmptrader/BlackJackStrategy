@@ -1,89 +1,75 @@
 ﻿@page "/"
-@inject ViewModels.StrategyViewModel StrategyViewModel
+@inject CardStrategy.Core.ViewModels.MainViewModel MainViewModel
 @using CardStrategy.Models;
 
 <div>
     <h1>BlackJack Strategy Analyser</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th></th>
-                @for (int i = 2; i <= 10; i++)
+    <div class="row">
+        <div class="col-sm-8">
+            <StrategyTable MainViewModel="@MainViewModel" />
+
+        </div>
+        <div class="col-sm-4">
+            <table class="table">
+                @foreach (var logEntry in MainViewModel.Log)
                 {
-                    <th>@i</th>
+                    <tr>
+                        <td>@logEntry.TimeStamp</td>
+                        <td>@logEntry.Message</td>
+                    </tr>
                 }
-                <th>A</th>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <table>
+            <tr>
+                <td>
+                    <label>Starting pot</label>
+                </td>
+                <td>
+                    <input type="number" @bind="@MainViewModel.PlayerFunds" />
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var playerValue in StrategyViewModel.AvailableActions.OrderBy(a => a.PlayerValue).Select(a => a.PlayerValue).Distinct())
-            {
-                <tr>
-                    <td>@playerValue</td>
 
-                    @foreach (var availableAction in StrategyViewModel.AvailableActions.Where(a => a.PlayerValue == playerValue).OrderBy(a => a.DealerCard))
-                    {
-                        <td>
-                            <button @onclick="@(() => StrategyViewModel.ToggleActionCommand.Execute(availableAction.Key))"
-                                    style="width: 50px; align-content: center; font-size: x-small">
-                                @availableAction.PlayerAction
-                            </button>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+            <tr>
+                <td>
+                    <label>Target pot</label>
+                </td>
+                <td>
+                    <input type="number" @bind="@MainViewModel.TargetFunds" />
+                </td>
+            </tr>
 
-    <hr />
-
-    <table>
-        <tr>
-            <td>
-                <label>Starting pot</label>
-            </td>
-            <td>
-                <input type="number" @bind="@StrategyViewModel.PlayerFunds" />
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <label>Target pot</label>
-            </td>
-            <td>
-                <input type="number" @bind="@StrategyViewModel.TargetFunds" />
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <label>Betting Strategy</label>
-            </td>
-            <td>
-                <select id="select-box" bind="@StrategyViewModel.BettingStrategy">
-                    <option value=@BettingStrategy.Steady>@BettingStrategy.Steady.ToString()</option>
-                    <option value=@BettingStrategy.IncreaseOnWin>@BettingStrategy.IncreaseOnWin.ToString()</option>
-                    <option value=@BettingStrategy.IncreaseOnLose>@BettingStrategy.IncreaseOnLose.ToString()</option>
-                    <option value=@BettingStrategy.DoubleOnWin>@BettingStrategy.DoubleOnWin.ToString()</option>
-                    <option value=@BettingStrategy.DoubleOnLose>@BettingStrategy.DoubleOnLose.ToString()</option>
-                </select>
-            </td>
-        </tr>
-    </table>
+            <tr>
+                <td>
+                    <label>Betting Strategy</label>
+                </td>
+                <td>
+                    <select id="select-box" bind="@MainViewModel.BettingStrategy">
+                        <option value=@BettingStrategy.Steady>@BettingStrategy.Steady.ToString()</option>
+                        <option value=@BettingStrategy.IncreaseOnWin>@BettingStrategy.IncreaseOnWin.ToString()</option>
+                        <option value=@BettingStrategy.IncreaseOnLose>@BettingStrategy.IncreaseOnLose.ToString()</option>
+                        <option value=@BettingStrategy.DoubleOnWin>@BettingStrategy.DoubleOnWin.ToString()</option>
+                        <option value=@BettingStrategy.DoubleOnLose>@BettingStrategy.DoubleOnLose.ToString()</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <hr />
 
-<button @onclick="@(() => StrategyViewModel.RunAnalysisCommand.Execute(null))">Run Analysis</button>
+<button @onclick="@(() => MainViewModel.RunAnalysisCommand.Execute(null))">Run Analysis</button>
 
-
-@code {
+@code {    
 
     protected override Task OnInitAsync()
     {
-        StrategyViewModel.Init();
+        MainViewModel.Init();
         return Task.CompletedTask;
     }
 }

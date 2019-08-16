@@ -6,20 +6,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CardStrategy.Core
 {
     public class RunAnalysis : IRunAnalysis
     {
         private readonly ILogger<RunAnalysis> _logger;
+        private readonly IPlayHand _playHand;
 
-        public RunAnalysis(ILogger<RunAnalysis> logger)
+        public RunAnalysis(ILogger<RunAnalysis> logger, IPlayHand playHand)
         {
             _logger = logger;
+            _playHand = playHand;
         }
 
-        public decimal Run(AnalysisConfiguration analysisConfiguration)
-        {
+        public async Task<decimal> Run(AnalysisConfiguration analysisConfiguration, IUpdateProgress updateProgress)
+        {            
             decimal currentBet = analysisConfiguration.StartingAnte;
 
             _logger.LogInformation($"Run: Start currentBet: {currentBet}");
@@ -47,32 +50,35 @@ namespace CardStrategy.Core
                     Deck.CreateDeck().Cards)
             };
 
-            table.SitPlayer(player);
-
-            // Cut the deck??
+            table.SitPlayer(player);            
 
             // Play each hand
-            var playHand = new PlayHand(shoe.Cards, table);
+            _playHand.Init(shoe.Cards, table);
 
-            while (player.Money > 0 && player.Money < analysisConfiguration.TargetFunds)
+            while (player.Money > 0 && player.Money < analysisConfiguration.TargetFunds && currentBet <= player.Money)
             {
-                playHand.PlayerAnte(player, currentBet);
-                
-                playHand.Deal();
-                _logger.LogInformation($"Run: Dealt Players {string.Join(", ", playHand.Table.Players.SelectMany(a => a.Hand.Cards).Select(a => a.Description))}");
-                _logger.LogInformation($"Run: Dealt Dealer {string.Join(", ", playHand.Table.Dealer.Hand.Cards.Select(a => a.Description))}");
+                await updateProgress.Update(player.Money, analysisConfiguration.TargetFunds);
 
-                while (playHand.GameInProgress)
+                _playHand.PlayerAnte(player, currentBet);
+                
+                _playHand.Deal();
+                _logger.LogInformation($"Run: Dealt Players {string.Join(", ", _playHand.Table.Players.SelectMany(a => a.Hand.Cards).Select(a => a.Description))}");
+                _logger.LogInformation($"Run: Dealt Dealer {string.Join(", ", _playHand.Table.Dealer.Hand.Cards.Select(a => a.Description))}");
+
+                while (_playHand.GameInProgress)
                 {
-                    playHand.Play();
+                    _playHand.Play();
                 }
 
-                _logger.LogInformation($"Run: Play Finished Players {string.Join(", ", playHand.Table.Players.SelectMany(a => a.Hand.Cards).Select(a => a.Description))}");
-                _logger.LogInformation($"Run: Play Finished Dealer {string.Join(", ", playHand.Table.Dealer.Hand.Cards.Select(a => a.Description))}");
+                _logger.LogInformation($"Run: Play Finished Players {string.Join(", ", _playHand.Table.Players.SelectMany(a => a.Hand.Cards).Select(a => a.Description))}");
+                _logger.LogInformation($"Run: Play Finished Dealer {string.Join(", ", _playHand.Table.Dealer.Hand.Cards.Select(a => a.Description))}");
 
-                playHand.Payout();
+                bool playerWins = _playHand.Payout();
+                currentBet = BettingStrategyHelper.DetermineBet(
+                    currentBet, analysisConfiguration.BettingStrategy, playerWins, 
+                    analysisConfiguration.TargetFunds, player.Money);                
 
-                _logger.LogInformation($"Run: Player Funds {string.Join(", ", playHand.Table.Players.Select(a => a.Money))}");
+                _logger.LogInformation($"Run: Player Funds {string.Join(", ", _playHand.Table.Players.Select(a => a.Money))}");
             }
 
             return player.Money;
